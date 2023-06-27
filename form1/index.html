@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registration Form</title>
+  <style>
+    .error-message {
+      color: red;
+      font-size: 12px;
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    input[type="radio"],
+    input[type="checkbox"] {
+      margin-right: 5px;
+    }
+    
+    .dob-selectors {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    
+    .language-checkboxes label {
+      margin-right: 10px;
+    }
+    
+    .submit-button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    
+  </style>
+  <script>
+    function generateOptions(start, end, selectElement) {
+      for (let i = start; i <= end; i++) {
+        let option = document.createElement("option");
+        option.value = i;
+        option.text = i;
+        selectElement.appendChild(option);
+      }
+    }
+    
+    window.addEventListener("DOMContentLoaded", function() {
+      var dob = document.getElementById("dob");
+      generateOptions(1900, 2023, dob);
+    });
+    
+    function validateForm() {
+      var firstName = document.getElementById("firstName").value;
+      var email = document.getElementById("email").value;
+      var mobile = document.getElementById("mobile").value;
+      var gender = document.querySelector('input[name="gender"]:checked');
+      var dob = document.getElementById("dob").value;
+      var languages = document.querySelectorAll('input[name="languages[]"]:checked');
+      var address = document.getElementById("address").value;
+      var errorContainer = document.getElementById("errorContainer");
+      var errorMessages = [];
+
+      if (firstName === "") {
+        errorMessages.push("First Name is required");
+        document.getElementById("firstName").classList.add("error-input");
+        document.getElementById("firstNameError").innerText = "Please enter your First Name";
+      } else {
+        document.getElementById("firstName").classList.remove("error-input");
+        document.getElementById("firstNameError").innerText = "";
+      }
+      
+      if (email === "") {
+        errorMessages.push("Email is required");
+        document.getElementById("email").classList.add("error-input");
+        document.getElementById("emailError").innerText = "Please enter your Email";
+      } else {
+        document.getElementById("email").classList.remove("error-input");
+        document.getElementById("emailError").innerText = "";
+      }
+      
+      if (mobile === "") {
+        errorMessages.push("Mobile is required");
+        document.getElementById("mobile").classList.add("error-input");
+        document.getElementById("mobileError").innerText = "Please enter your Mobile number";
+      } else {
+        document.getElementById("mobile").classList.remove("error-input");
+        document.getElementById("mobileError").innerText = "";
+      }
+      
+      if (!gender) {
+        errorMessages.push("Gender is required");
+        document.getElementById("genderContainer").classList.add("error-input");
+        document.getElementById("genderError").innerText = "Please select your Gender";
+      } else {
+        document.getElementById("genderContainer").classList.remove("error-input");
+        document.getElementById("genderError").innerText = "";
+      }
+      
+      if (dob === "") {
+        errorMessages.push("Date of Birth is required");
+        document.getElementById("dob").classList.add("error-input");
+        document.getElementById("dobError").innerText = "Please enter your Date of Birth";
+      } else {
+        document.getElementById("dob").classList.remove("error-input");
+        document.getElementById("dobError").innerText = "";
+      }
+      
+      if (languages.length === 0) {
+        errorMessages.push("At least one Language should be selected");
+        document.getElementById("languagesContainer").classList.add("error-input");
+        document.getElementById("languagesError").innerText = "Please select at least one Language";
+      } else {
+        document.getElementById("languagesContainer").classList.remove("error-input");
+        document.getElementById("languagesError").innerText = "";
+      }
+      
+      if (address === "") {
+        errorMessages.push("Address is required");
+        document.getElementById("address").classList.add("error-input");
+        document.getElementById("addressError").innerText = "Please enter your Address";
+      } else {
+        document.getElementById("address").classList.remove("error-input");
+        document.getElementById("addressError").innerText = "";
+      }
+
+      if (errorMessages.length > 0) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>Registration Form</h1>
+  <form name="registrationForm" action="process.php" method="POST" onsubmit="return validateForm()">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName">
+    <div id="firstNameError" class="error-message"></div>
+    
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email">
+    <div id="emailError" class="error-message"></div>
+    
+    <label for="mobile">Mobile:</label>
+    <input type="text" id="mobile" name="mobile" pattern="\d{10}" title="Mobile number must be a 10-digit number">
+    <div id="mobileError" class="error-message"></div>
+    
+    <label>Gender:</label>
+    <div id="genderContainer">
+      <input type="radio" id="male" name="gender" value="male">
+      <label for="male">Male</label>
+      <input type="radio" id="female" name="gender" value="female">
+      <label for="female">Female</label>
+    </div>
+    <div id="genderError" class="error-message"></div>
+    
+    <div>
+      <label for="dob">Date of Birth:</label>
+      <input type="date" id="dob" name="dob">
+    </div>
+    <div id="dobError" class="error-message"></div>
+    
+    <div class="language-checkboxes" id="languagesContainer">
+      <label>Languages Known:</label>
+      <input type="checkbox" id="java" name="languages[]" value="java">
+      <label for="java">Java</label>
+      <input type="checkbox" id="c" name="languages[]" value="c">
+      <label for="c">C</label>
+      <input type="checkbox" id="python" name="languages[]" value="python">
+      <label for="python">Python</label>
+    </div>
+    <div id="languagesError" class="error-message"></div>
+    
+    <label for="address">Address:</label>
+    <textarea id="address" name="address"></textarea>
+    <div id="addressError" class="error-message"></div>
+    
+    <input class="submit-button" type="submit" value="Submit">
+    
+    <div id="errorContainer"></div>
+  </form>
+</body>
+</html>
